@@ -22,7 +22,7 @@ type OrderRequest struct {
 	Instructions []string `form:"instructions" binding:"max=200"`
 }
 
-func (h *Handler) ServeNewOrderPost(c *gin.Context) {
+func (h *Handler) ServeNewOrderForm(c *gin.Context) {
 	c.HTML(http.StatusOK, "order.tmpl", OrderFormData{
 		PizzaTypes: models.PizzaTypes,
 		PizzaSizes: models.PizzaSizes,
@@ -48,10 +48,10 @@ func (h *Handler) HandleNewOrderPost(c *gin.Context) {
 
 	order := models.Order{
 		CustomerName: form.Name,
-		Phone: form.Phone,
-		Address: form.Address,
-		Status: models.OrderStatuses[0],
-		Items: orderItems,
+		Phone:        form.Phone,
+		Address:      form.Address,
+		Status:       models.OrderStatuses[0],
+		Items:        orderItems,
 	}
 
 	if err := h.orders.CreateOrder(&order); err != nil {
@@ -62,16 +62,16 @@ func (h *Handler) HandleNewOrderPost(c *gin.Context) {
 
 	slog.Info("Order created", "orderId", order.ID, "customer", order.CustomerName)
 
-	c.Redirect(http.StatusSeeOther, "/customer/" + order.ID)
+	c.Redirect(http.StatusSeeOther, "/customer/"+order.ID)
 }
 
-func(h *Handler) serveCustomer(c *gin.Context) {
+func (h *Handler) serveCustomer(c *gin.Context) {
 	orderID := c.Param("id")
 	if orderID == "" {
 		c.String(http.StatusBadRequest, "Order ID is required")
 	}
 
-	order, err := h.orders.GetOrder(orderID) 
+	order, err := h.orders.GetOrder(orderID)
 	if err != nil {
 		c.String(http.StatusNotFound, "Order not found")
 		return
