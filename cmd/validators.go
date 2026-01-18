@@ -5,7 +5,7 @@ import (
 
 	"github.com/dev-danilocordeiro/pizza-shop-order/internal/models"
 	"github.com/gin-gonic/gin/binding"
-	"github.com/go-playground/validator"
+	"github.com/go-playground/validator/v10"
 )
 
 func RegisterCustomValidators() {
