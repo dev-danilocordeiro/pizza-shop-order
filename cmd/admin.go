@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -37,7 +38,7 @@ func (h *Handler) HandleLoginPost(c *gin.Context) {
 		return
 	}
 
-	SetSessionValue(c, "userID", user.ID)
+	SetSessionValue(c, "userID", fmt.Sprintf("%v", user.ID))
 	SetSessionValue(c, "username", user.Username)
 
 	c.Redirect(http.StatusSeeOther, "/admin")
